@@ -2,12 +2,16 @@ package tdigital.ksight;
 
 import java.time.Duration;
 
+import org.apache.log4j.Logger;
+import org.apache.log4j.PropertyConfigurator;
+import org.apache.log4j.xml.DOMConfigurator;
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.annotations.Test;
+
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 
@@ -16,8 +20,16 @@ public class LoginTest {
 	@Test
 	public void TC_login1() throws InterruptedException
 	{
+		
+		Logger logger = Logger.getLogger("LoginTest");
+		DOMConfigurator.configure("log4j.xml");
+		
+		//PropertyConfigurator.configure("log4j.properties");
+		
 		WebDriverManager.chromedriver().setup();
 		WebDriver driver = new ChromeDriver();
+		
+		logger.info("Browser Lanched");
 		String url = "https://www.rahulshettyacademy.com/locatorspractice/";
 		driver.navigate().to(url);
 		driver.manage().window().maximize();
@@ -32,7 +44,7 @@ public class LoginTest {
 		
 		
 		//Web Elements
-		
+		logger.info(ph_num+"entered");
 		WebElement forgot_password = driver.findElement(By.xpath("//div/a"));
 		forgot_password.click();
 		
@@ -42,6 +54,7 @@ public class LoginTest {
 		WebElement email = driver.findElement(By.cssSelector("input[placeholder='Email']"));
 		email.sendKeys(my_email);
 		
+		logger.info("Phone number entered");
 		WebElement phone_number = driver.findElement(By.cssSelector("input[placeholder='Phone Number']"));
 		phone_number.sendKeys(ph_num);
 		
@@ -73,6 +86,7 @@ public class LoginTest {
 		WebElement password = driver.findElement(By.name("inputPassword"));
 		password.sendKeys(new_password);
 		
+		Thread.sleep(3000);
 		WebElement checkbox_1 = driver.findElement(By.xpath("//div//span//input[@name='chkboxOne']"));
 		checkbox_1.click();
 		
@@ -89,7 +103,7 @@ public class LoginTest {
 		
 		//Validating the Success Message
 		Assert.assertEquals("You are successfully logged in.", success_msg);
-		
+		logger.info("Test Passed");
 		WebElement log_out = driver.findElement(By.className("logout-btn"));
 		log_out.click();
 		
